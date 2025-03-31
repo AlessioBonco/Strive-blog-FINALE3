@@ -25,12 +25,7 @@ const Home = () => {
     };
 
     fetchPosts();
-  }, [currentPage]);// Ricarica i post ogni volta che cambia la pagina
-
-  // Funzione per gestire il cambio di pagina
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
+  }, [currentPage]);
 
   return (
     <Container className="mt-5">
