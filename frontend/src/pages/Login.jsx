@@ -12,7 +12,8 @@ function Login() {
   const navigate = useNavigate();
   const { login } = useAuth();
   
-  const API_URL = "http://localhost:3003/auth";
+ const API_URL = "https://strive-blog-finale3-6.onrender.com/api/v1/auth"; // Usa l'URL del tuo backend su Render
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
