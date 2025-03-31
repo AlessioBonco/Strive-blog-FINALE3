@@ -9,7 +9,7 @@ const passport = require("./utils/passport");
 const userRoutes = require("./routes/users");
 const postRoutes = require("./routes/posts");
 const commentRoutes = require("./routes/comment");
-const authRoutes = require("./routes/auth"); // Importa le route di autenticazione
+
 
 const app = express();
 
