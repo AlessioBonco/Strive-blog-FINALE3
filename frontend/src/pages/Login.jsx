@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../contexts/AuthorContext";
 import axios from "axios";
 import { Button, Form, Container, Row, Col, Alert, Spinner } from "react-bootstrap";
 
@@ -10,10 +9,8 @@ function Login() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { login } = useAuth();
-  
- const API_URL = "https://strive-blog-finale3-6.onrender.com/api/v1/auth"; // Usa l'URL del tuo backend su Render
 
+  const API_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:3003/auth"; // Utilizza il valore dal .env
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -42,42 +39,33 @@ function Login() {
     }
   };
 
-  const handleGoogleLogin = () => {
-    window.location.href = `${API_URL}/google`;
-  };
-
   return (
-    <Container className="mt-5">
-      <Row className="justify-content-center">
-        <Col md={6}>
-          <h2 className="text-center mb-4">Login</h2>
+    <Container>
+      <Row>
+        <Col md={{ span: 6, offset: 3 }}>
+          <h2>Login</h2>
           {error && <Alert variant="danger">{error}</Alert>}
           <Form onSubmit={handleSubmit}>
-            <Form.Group controlId="formEmail" className="mb-3">
+            <Form.Group controlId="formBasicEmail">
               <Form.Label>Email</Form.Label>
-              <Form.Control
-                type="email"
-                placeholder="Inserisci la tua email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
+              <Form.Control 
+                type="email" 
+                placeholder="Enter email" 
+                value={email} 
+                onChange={(e) => setEmail(e.target.value)} 
               />
             </Form.Group>
-            <Form.Group controlId="formPassword" className="mb-3">
+            <Form.Group controlId="formBasicPassword">
               <Form.Label>Password</Form.Label>
-              <Form.Control
-                type="password"
-                placeholder="Inserisci la tua password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
+              <Form.Control 
+                type="password" 
+                placeholder="Password" 
+                value={password} 
+                onChange={(e) => setPassword(e.target.value)} 
               />
             </Form.Group>
-            <Button variant="primary" type="submit" className="w-100" disabled={loading}>
+            <Button variant="primary" type="submit" disabled={loading}>
               {loading ? <Spinner animation="border" size="sm" /> : "Login"}
-            </Button>
-            <Button variant="secondary" onClick={handleGoogleLogin} className="w-100 mt-3">
-              Login con Google
             </Button>
           </Form>
         </Col>
@@ -87,5 +75,6 @@ function Login() {
 }
 
 export default Login;
+
 
 
