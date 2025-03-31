@@ -11,21 +11,21 @@ const Home = () => {
   const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
-   const fetchPosts = async () => {
-    try {
+    const fetchPosts = async () => {
+      try {
         setLoading(true);
         const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/posts?page=${currentPage}&limit=6`);
         setPosts(res.data.posts);
         setTotalPages(res.data.totalPages);
-    } catch (error) {
+      } catch (error) {
         setError('Errore nel caricamento dei post. Riprova più tardi.');
-    } finally {
+      } finally {
         setLoading(false);
-    }
-};
+      }
+    };
 
     fetchPosts();
-  }, [currentPage]); // Ricarica i post ogni volta che cambia la pagina
+  }, [currentPage]);// Ricarica i post ogni volta che cambia la pagina
 
   // Funzione per gestire il cambio di pagina
   const handlePageChange = (pageNumber) => {
