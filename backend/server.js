@@ -13,6 +13,12 @@ const authRoutes = require("./routes/auth"); // Importa le route di autenticazio
 
 const app = express();
 
+const corsOptions = {
+    origin: 'https://tuo-dominio-frontend.vercel.app', // Sostituisci con il dominio del tuo frontend
+    credentials: true, // Se stai utilizzando cookie o autenticazione
+  };
+
+
 // Middleware per la sessione (corretto)
 app.use(session({
     secret: process.env.SESSION_SECRET || "supersegreto",
@@ -30,7 +36,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Verifica se l'URL di MongoDB è caricato correttamente
