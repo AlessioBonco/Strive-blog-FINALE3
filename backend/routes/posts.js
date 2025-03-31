@@ -23,9 +23,6 @@ router.post('/', upload.single('cover'), async (req, res) => {
             return res.status(400).json({ message: "Cover image is required" });
         }
 
-        // Ottieni l'URL dell'immagine caricata su Cloudinary
-        const cover = req.file?.path; // O Cloudinary, se stai usando la sua API
-
         const newPost = new Post({
             title,
             category,
