@@ -23,9 +23,13 @@ const Home = () => {
         setLoading(false);
       }
     };
-
     fetchPosts();
-  }, [currentPage]);
+  }, [currentPage]); // Dipendenza da currentPage per caricare i post per la pagina selezionata
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
 
   return (
     <Container className="mt-5">
