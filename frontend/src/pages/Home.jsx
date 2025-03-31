@@ -11,22 +11,18 @@ const Home = () => {
   const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      try {
+   const fetchPosts = async () => {
+    try {
         setLoading(true);
-        const res = await axios.get(`http://localhost:3003/api/posts?page=${currentPage}&limit=6`);
-        console.log('Post ricevuti dal backend:', res.data); // Log per debug
+        const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/posts?page=${currentPage}&limit=6`);
         setPosts(res.data.posts);
         setTotalPages(res.data.totalPages);
-      } catch (error) {
-        console.error('Errore durante il recupero dei post:', error.message);
+    } catch (error) {
         setError('Errore nel caricamento dei post. Riprova più tardi.');
-        setPosts([]);
-        setTotalPages(1);
-      } finally {
+    } finally {
         setLoading(false);
-      }
-    };
+    }
+};
 
     fetchPosts();
   }, [currentPage]); // Ricarica i post ogni volta che cambia la pagina
