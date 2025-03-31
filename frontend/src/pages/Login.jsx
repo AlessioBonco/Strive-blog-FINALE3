@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthorContext";
 import axios from "axios";
 import { Button, Form, Container, Row, Col, Alert, Spinner } from "react-bootstrap";
 
@@ -9,62 +10,59 @@ function Login() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
-  const API_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:3003/auth"; // Utilizza il valore dal .env
+  const { login } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
-        const response = await fetch(`${API_URL}/login/local`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ email, password }),
+        const response = await axios.post("http://localhost:3003/api/users/login", {
+            email,
+            password,
         });
 
-        const data = await response.json();
-        if (response.ok) {
-            console.log("Login effettuato con successo:", data);
-            // Salva il token e reindirizza
-            localStorage.setItem("token", data.token);
-            navigate("/");
-        } else {
-            console.error("Errore durante il login:", data.message);
-            setError(data.message);
-        }
+        const data = response.data;
+        console.log("Login effettuato con successo:", data);
+
+        // Salva i dati dell'utente nel contesto e nel localStorage
+        login(data);
+        setLoading(false);
+        navigate("/"); // Reindirizza alla home page
     } catch (err) {
-        console.error("Errore del server:", err);
-        setError("Errore del server");
+        console.error("Errore durante il login:", err.response?.data?.message || err.message);
+        setError(err.response?.data?.message || "Errore del server");
+        setLoading(false);
     }
   };
 
   return (
-    <Container>
-      <Row>
-        <Col md={{ span: 6, offset: 3 }}>
-          <h2>Login</h2>
+    <Container className="mt-5">
+      <Row className="justify-content-center">
+        <Col md={6}>
+          <h2 className="text-center mb-4">Login</h2>
           {error && <Alert variant="danger">{error}</Alert>}
           <Form onSubmit={handleSubmit}>
-            <Form.Group controlId="formBasicEmail">
+            <Form.Group controlId="formEmail" className="mb-3">
               <Form.Label>Email</Form.Label>
-              <Form.Control 
-                type="email" 
-                placeholder="Enter email" 
-                value={email} 
-                onChange={(e) => setEmail(e.target.value)} 
+              <Form.Control
+                type="email"
+                placeholder="Inserisci la tua email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
               />
             </Form.Group>
-            <Form.Group controlId="formBasicPassword">
+            <Form.Group controlId="formPassword" className="mb-3">
               <Form.Label>Password</Form.Label>
-              <Form.Control 
-                type="password" 
-                placeholder="Password" 
-                value={password} 
-                onChange={(e) => setPassword(e.target.value)} 
+              <Form.Control
+                type="password"
+                placeholder="Inserisci la tua password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
               />
             </Form.Group>
-            <Button variant="primary" type="submit" disabled={loading}>
+            <Button variant="primary" type="submit" className="w-100" disabled={loading}>
               {loading ? <Spinner animation="border" size="sm" /> : "Login"}
             </Button>
           </Form>
@@ -75,6 +73,4 @@ function Login() {
 }
 
 export default Login;
-
-
 
