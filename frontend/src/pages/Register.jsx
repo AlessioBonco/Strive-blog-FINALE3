@@ -14,10 +14,15 @@ const Register = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('http://localhost:3003/api/users/register', { firstName: firstname, lastName: lastname, email, password });
+            await axios.post('http://localhost:3003/api/users/register', {
+                firstName: firstname,
+                lastName: lastname,
+                email,
+                password,
+            });
             navigate('/login');
         } catch (error) {
-            setError('Registration failed. Please try again.');
+            setError(error.response?.data?.message || 'Registration failed. Please try again.');
         }
     }
 
