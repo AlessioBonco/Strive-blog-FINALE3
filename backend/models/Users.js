@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String }, // Solo per il login locale
     role: { type: String, enum: ['Editor', 'Admin'], default: 'Editor' },
-    googleId: { type: String, unique: true }, // Per il login con Google
+
 }, { timestamps: true });
 
 // Middleware per hashare la password prima di salvare
