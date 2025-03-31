@@ -14,7 +14,7 @@ const Home = () => {
     const fetchPosts = async () => {
       try {
         setLoading(true);
-        const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/posts?page=${currentPage}&limit=6`);
+        const res = await axios.get(`http://localhost:3003/api/posts?page=${currentPage}&limit=6`);
         setPosts(res.data.posts);
         setTotalPages(res.data.totalPages);
       } catch (error) {
@@ -23,9 +23,11 @@ const Home = () => {
         setLoading(false);
       }
     };
-    fetchPosts();
-  }, [currentPage]); // Dipendenza da currentPage per caricare i post per la pagina selezionata
 
+    fetchPosts();
+  }, [currentPage]); // Ricarica i post ogni volta che cambia la pagina
+
+  // Funzione per gestire il cambio di pagina
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
