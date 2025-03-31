@@ -1,20 +1,20 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { Container, Row, Col, Alert, Pagination } from "react-bootstrap";
-import PostCard from "../components/PostCard";
+import { useState, useEffect } from 'react';
+import { Container, Row, Col, Alert, Pagination } from 'react-bootstrap';
+import axios from 'axios';
+import PostCard from '../components/PostCard';
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(true); // Variabile per controllare lo stato di caricamento
+  const [error, setError] = useState(''); 
+  const [currentPage, setCurrentPage] = useState(1); 
   const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
         setLoading(true);
-        const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/posts?page=${currentPage}&limit=6`);
+        const res = await axios.get(`http://localhost:3003/api/posts?page=${currentPage}&limit=6`);
         setPosts(res.data.posts);
         setTotalPages(res.data.totalPages);
       } catch (error) {
@@ -25,13 +25,12 @@ const Home = () => {
     };
 
     fetchPosts();
-  }, [currentPage]);
+  }, [currentPage]); // Ricarica i post ogni volta che cambia la pagina
 
   // Funzione per gestire il cambio di pagina
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
-
 
   return (
     <Container className="mt-5">
